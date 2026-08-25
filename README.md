@@ -107,29 +107,116 @@ This repo contains the **full modified openpi source** with SO-101 customization
 └── README.md
 ```
 
-## Quick start
+## Environment setup
+
+### Prerequisites
+
+| Requirement | Version | Notes |
+|---|---|---|
+| Python | ≥ 3.11 | Required by openpi |
+| CUDA | 12.x | JAX builds against CUDA 12 |
+| GPU | NVIDIA (L20 / A100 / 4090) | Single GPU sufficient for LoRA fine-tune |
+| OS | Linux (Ubuntu 22.04+) | Primary supported platform; WSL2 works too |
+
+### Option A: uv (recommended, faster)
 
 ```bash
-git clone https://github.com/peng-experiment/pinetree_pipi.git
-cd pinetree_pipi
+# Install uv if not present
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+git clone https://github.com/ljt228/pi05-so101-finetune.git
+cd pi05-so101-finetune
 git checkout pi05-so101-finetune-0825
 
-# Option A: uv (recommended)
-uv sync                        # installs jax + all deps
-
-# Option B: pip
-pip install -e ".[dev]"
-```
-
-Place your LeRobot v2.1 dataset under `~/.cache/huggingface/lerobot/<repo_id>`, then:
-
-```bash
+uv sync                              # creates .venv, installs all deps
 uv run scripts/train.py pi05_so101_lora_finetune --exp so101_lora_v1
 ```
 
-The SO-101 config is already registered in `src/openpi/training/config.py` — no manual config patching needed.
+### Option B: pip
+
+```bash
+git clone https://github.com/ljt228/pi05-so101-finetune.git
+cd pi05-so101-finetune
+git checkout pi05-so101-finetune-0825
+
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+### Key dependencies (installed automatically)
+
+| Package | Version | Purpose |
+|---|---|---|
+| `jax[cuda12]` | 0.5.3 | Core ML framework |
+| `flax` | 0.10.2 | Neural network library for JAX |
+| `torch` | 2.7.1 | PyTorch (data loading, some ops) |
+| `lerobot` | commit `0cf8648` | LeRobot v2.1 dataset format |
+| `transformers` | 4.53.2 | HuggingFace model support |
+| `orbax-checkpoint` | 0.11.13 | Checkpoint save/load |
+| `wandb` | ≥ 0.19.1 | Experiment tracking |
+
+### SO-101 specific packages (if using real robot)
+
+For data collection and real-robot deployment, install these separately:
+
+```bash
+pip install so-101 gym-so101 robodiff
+pip install rerun-sdk rerun-imjoy-plugin   # visualization
+```
+
+### Dataset setup
+
+Place your LeRobot v2.1 dataset under:
+
+```
+~/.cache/huggingface/lerobot/<repo_id>/
+├── data/
+│   └── chunk-000/
+│       └── episode_000000.parquet
+├── videos/
+│   └── chunk-000/
+│       └── observation.images.global_episode_000000.mp4
+├── meta/
+│   ├── info.json
+│   └── stats.json
+└── task_index.json
+```
+
+Or compute norm stats first:
+
+```bash
+uv run scripts/compute_norm_stats.py <repo_id>
+```
+
+### Training
+
+```bash
+# LoRA fine-tune on SO-101
+uv run scripts/train.py pi05_so101_lora_finetune --exp so101_lora_v1
+
+# Checkpoints saved to: checkpoints/<exp_name>/<step>/params/
+# Logs saved to: wandb/ (if enabled)
+```
+
+### Inference
+
+```bash
+# Serve a trained policy
+uv run scripts/serve_policy.py --config pi05_so101_lora_finetune --checkpoint checkpoints/pi05_so101_lora_finetune/<step>
+```
 
 Raw training log (129 loss/grad-norm records): [`assets/train.log`](assets/train.log).
+
+## Troubleshooting
+
+| Issue | Solution |
+|---|---|
+| `jaxlib` CUDA mismatch | Ensure `nvidia-cuda-runtime-cu12`, `nvidia-cudnn-cu12` are installed; run `python -c "import jax; print(jax.devices())"` to verify GPU detection |
+| `lerobot` import error | Lerobot is pinned to commit `0cf8648` — do not upgrade independently |
+| `norm_stats.json` not found | Run `uv run scripts/compute_norm_stats.py <repo_id>` before training |
+| Checkpoint not loading | Ensure `gs://openpi-assets/checkpoints/pi05_base/params` is accessible (or download manually to `checkpoints/`) |
+| OOM on single GPU | Reduce `batch_size` in config (default 32); L20 handles ~16, A100 handles 32+ |
+| `wandb` login required | `wandb login` or set `WANDB_DISABLED=true` to disable logging |
 
 ## What's modified from upstream openpi
 
