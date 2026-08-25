@@ -90,30 +90,53 @@ Both datasets follow the [LeRobot v2.1](https://github.com/huggingface/lerobot) 
 
 ## Repo structure
 
+This repo contains the **full modified openpi source** with SO-101 customizations already integrated:
+
 ```
-├── assets/                  # sample videos, frames, loss curve, raw training log
-├── config/
-│   └── pi05_so101_lora_finetune.py   # the TrainConfig used (openpi)
-├── scripts/
-│   └── train.sh             # training launch command
-├── docs/
-│   └── dataset.md           # LeRobot v2.1 feature specification
+├── src/openpi/              # openpi Python package (modified)
+│   ├── training/config.py   # LeRobotSO101DataConfig + pi05_so101_lora_finetune config
+│   ├── policies/so101_policy.py  # SO-101 input/output transforms
+│   └── ...
+├── examples/                # openpi examples (aloha, droid, libero, etc.)
+├── scripts/                 # training, inference, data processing scripts
+├── packages/                # openpi sub-packages
+├── assets/                  # sample videos, frames, loss curve
+├── config/                  # SO-101 config reference
+├── docs/                    # dataset spec, architecture docs
+├── pyproject.toml           # project dependencies (uv/pip)
 └── README.md
 ```
 
-## Reproducing
+## Quick start
 
 ```bash
-git clone https://github.com/Physical-Intelligence/openpi
-cd openpi && uv sync                        # installs jax + deps
+git clone https://github.com/peng-experiment/pinetree_pipi.git
+cd pinetree_pipi
+git checkout pi05-so101-finetune-0825
 
-# place your LeRobot dataset under ~/.cache/huggingface/lerobot/<repo_id>
-# drop the config block into src/openpi/training/config.py
+# Option A: uv (recommended)
+uv sync                        # installs jax + all deps
 
+# Option B: pip
+pip install -e ".[dev]"
+```
+
+Place your LeRobot v2.1 dataset under `~/.cache/huggingface/lerobot/<repo_id>`, then:
+
+```bash
 uv run scripts/train.py pi05_so101_lora_finetune --exp so101_lora_v1
 ```
 
+The SO-101 config is already registered in `src/openpi/training/config.py` — no manual config patching needed.
+
 Raw training log (129 loss/grad-norm records): [`assets/train.log`](assets/train.log).
+
+## What's modified from upstream openpi
+
+1. **`src/openpi/training/config.py`** — added `LeRobotSO101DataConfig` class and `pi05_so101_lora_finetune` TrainConfig
+2. **`src/openpi/policies/so101_policy.py`** — new SO-101 input/output transform (dual cameras, 6-DoF actions)
+
+All other files are stock openpi (Physical Intelligence).
 
 ## Acknowledgements
 
