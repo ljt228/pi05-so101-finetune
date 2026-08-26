@@ -29,7 +29,6 @@ Uploading 72efda1252317e9823fe814fb97e274f.mp4…
 
 https://github.com/user-attachments/assets/67a7d02a-0912-41c1-8959-e1c6d37c49cf
 
-[▶ 观看真机部署视频](assets/demo_pi05_so101.mp4)
 
 ## Downloads
 
