@@ -23,8 +23,7 @@ full VLA on a single GPU, and deploying the policy back on the real arm.
 [`assets/sample_wrist.mp4`](assets/sample_wrist.mp4) ·
 [`assets/sample_breakfast_front.mp4`](assets/sample_breakfast_front.mp4)
 
-<!-- 真机部署视频 -->
-### Demo: fine-tuned π₀.₅ on real SO-101
+### Fine-tuned π₀.₅ on real SO-101
 
 
 Uploading 72efda1252317e9823fe814fb97e274f.mp4…
