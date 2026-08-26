@@ -1,5 +1,4 @@
 
-https://github.com/user-attachments/assets/67a7d02a-0912-41c1-8959-e1c6d37c49cf
 # Fine-tuning π₀.₅ for Real-World Robot Manipulation on SO-101
 
 ![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=150&section=header&text=%CF%80%E2%82%80.%E2%82%85%20%C3%97%20SO-101&fontSize=34&fontColor=ffffff&fontAlignY=36&desc=Data%20Collection%20%C2%B7%20LoRA%20Fine-tuning%20%C2%B7%20Real-Robot%20Deployment&descAlignY=58&descSize=15)
@@ -28,6 +27,7 @@ full VLA on a single GPU, and deploying the policy back on the real arm.
 
 Uploading 72efda1252317e9823fe814fb97e274f.mp4…
 
+https://github.com/user-attachments/assets/67a7d02a-0912-41c1-8959-e1c6d37c49cf
 
 [▶ 观看真机部署视频](assets/demo_pi05_so101.mp4)
 
