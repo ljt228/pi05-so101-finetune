@@ -25,6 +25,22 @@ full VLA on a single GPU, and deploying the policy back on the real arm.
 <video src="assets/deploy.mp4" controls width="480"></video>
 -->
 
+## Downloads
+
+| Resource | Link | Size |
+|---|---|---|
+| Dataset: breakfast (49 eps) | [jt-2026/so101-breakfast](https://huggingface.co/datasets/jt-2026/so101-breakfast) | 790 MB |
+| Dataset: yellow-block-plate (25 eps) | [jt-2026/so101-yellow-block-plate](https://huggingface.co/datasets/jt-2026/so101-yellow-block-plate) | 335 MB |
+| Trained checkpoint (15k steps) | [jt-2026/pi05-so101-lora-v1](https://huggingface.co/jt-2026/pi05-so101-lora-v1) | 9.5 GB |
+
+```bash
+# Download dataset
+huggingface-cli download jt-2026/so101-breakfast --repo-type dataset --local-dir ~/.cache/huggingface/lerobot/jt-2026/so101-breakfast
+
+# Download checkpoint
+huggingface-cli download jt-2026/pi05-so101-lora-v1 --local-dir checkpoints/pi05_so101_lora_finetune/so101_lora_v1/15000
+```
+
 ## Pipeline
 
 ```
