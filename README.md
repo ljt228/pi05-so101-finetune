@@ -21,9 +21,12 @@ full VLA on a single GPU, and deploying the policy back on the real arm.
 [`assets/sample_wrist.mp4`](assets/sample_wrist.mp4) ·
 [`assets/sample_breakfast_front.mp4`](assets/sample_breakfast_front.mp4)
 
-<!-- TODO: 真机部署视频 —— 把你的 rollout 视频放到 assets/deploy.mp4，然后取消下行注释：
-<video src="assets/deploy.mp4" controls width="480"></video>
--->
+<!-- 真机部署视频 -->
+### Demo: fine-tuned π₀.₅ on real SO-101
+
+https://github.com/ljt228/pi05-so101-finetune/assets/demo_pi05_so101.mp4
+
+<!-- 备选：<video src="assets/demo_pi05_so101.mp4" controls width="480"></video> -->
 
 ## Downloads
 
