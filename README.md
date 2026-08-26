@@ -24,9 +24,7 @@ full VLA on a single GPU, and deploying the policy back on the real arm.
 <!-- 真机部署视频 -->
 ### Demo: fine-tuned π₀.₅ on real SO-101
 
-https://github.com/ljt228/pi05-so101-finetune/assets/demo_pi05_so101.mp4
-
-<!-- 备选：<video src="assets/demo_pi05_so101.mp4" controls width="480"></video> -->
+[▶ 观看真机部署视频](assets/demo_pi05_so101.mp4)
 
 ## Downloads
 
